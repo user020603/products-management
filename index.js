@@ -1,10 +1,13 @@
 const express = require("express");
-const app = express();
+const route = require("./routes/client/index.route.js");
 require("dotenv").config();
+const database = require("./config/database.js");
 
+const app = express();
 const port = process.env.PORT;
 
-const route = require("./routes/client/index.route.js");
+
+database.connect();
 
 // Link with pug
 app.set("views", "./views");
