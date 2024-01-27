@@ -10,7 +10,9 @@ const route = require("./routes/client/index.route.js");
 app.set("views", "./views");
 app.set("view engine", "pug");
 
-// route
+app.use(express.static("public"));
+
+// routes
 route(app);
 
 // Start the server
@@ -19,7 +21,7 @@ app.listen(port, () => {
 }); 
 
 // check process run in port and kill them
-// lsof -i : port
+// lsof -i :port
 // kill -9 <PID>
 
 // start mongodb
