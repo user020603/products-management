@@ -1,9 +1,10 @@
 const express = require("express");
 const routeAdmin = require("./routes/admin/index.route.js");
 const route = require("./routes/client/index.route.js");
-require("dotenv").config();
 const database = require("./config/database.js");
+const systemCofig = require("./config/system.js");
 
+require("dotenv").config();
 const app = express();
 const port = process.env.PORT;
 
@@ -12,6 +13,9 @@ database.connect();
 // Link with pug
 app.set("views", "./views");
 app.set("view engine", "pug");
+
+// App local variables
+app.locals.prefixAdmin = systemCofig.prefixAdmin;
 
 app.use(express.static("public"));
 
