@@ -1,11 +1,11 @@
 const express = require("express");
+const routeAdmin = require("./routes/admin/index.route.js");
 const route = require("./routes/client/index.route.js");
 require("dotenv").config();
 const database = require("./config/database.js");
 
 const app = express();
 const port = process.env.PORT;
-
 
 database.connect();
 
@@ -17,6 +17,7 @@ app.use(express.static("public"));
 
 // routes
 route(app);
+routeAdmin(app);
 
 // Start the server
 app.listen(port, () => {
