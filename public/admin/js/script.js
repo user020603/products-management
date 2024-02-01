@@ -56,3 +56,66 @@ if (buttonPagination) {
 
 //End pagination
 
+// Checkbox Multi
+const checkboxMulti = document.querySelector("[checkbox-multi]");
+if (checkboxMulti) {
+    // console.log(checkboxMulti);
+    const inputCheckAll = checkboxMulti.querySelector("input[name='checkall']");
+    const inputIds = checkboxMulti.querySelectorAll("input[name='id']")
+
+    // console.log(inputCheckAll);
+    // console.log(inputIds);
+
+    inputCheckAll.addEventListener("click", () => {
+        if (inputCheckAll.checked) {
+            inputIds.forEach(input => {
+                input.checked = true;
+            });
+        }
+        else {
+            inputIds.forEach(input => {
+                input.checked = false;
+            })
+        }
+    });
+
+    inputIds.forEach((input) => {
+        input.addEventListener("click", () => {
+            const countChecked = checkboxMulti.querySelectorAll("input[name='id']:checked").length;
+            if (countChecked == inputIds.length) {
+                inputCheckAll.checked = true;
+            }
+            else inputCheckAll.checked = false;
+        })
+    })
+}
+// End Checkbox Multi
+
+// Form change multi
+const formChangeMulti = document.querySelector("[form-change-multi]");
+if (formChangeMulti) {
+    formChangeMulti.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const checkboxMulti = document.querySelector("[checkbox-multi]");
+        const inputsChecked = checkboxMulti.querySelectorAll(
+            "input[name='id']:checked"
+        )
+
+        if (inputsChecked.length > 0) {
+            let ids = []
+            const inputIds = formChangeMulti.querySelector("input[name='ids']");
+
+            inputsChecked.forEach(input => {
+                const id = input.value;
+                ids.push(id);
+            })
+            console.log(ids.join(", "));
+            inputIds.value = ids.join(", ");
+            formChangeMulti.submit();
+        } else {
+            alert("Vui long chon it nhat mot ban ghi! :)");
+        }
+    })
+}
+// End Form change multi
