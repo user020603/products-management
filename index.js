@@ -3,10 +3,13 @@ const routeAdmin = require("./routes/admin/index.route.js");
 const route = require("./routes/client/index.route.js");
 const database = require("./config/database.js");
 const systemCofig = require("./config/system.js");
+const methodOverride = require("method-override");
 
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT;
+
+app.use(methodOverride("_method"));
 
 database.connect();
 
