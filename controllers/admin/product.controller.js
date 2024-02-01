@@ -55,3 +55,5 @@ module.exports.changeStatus = async (req, res) => {
     await Product.updateOne({_id : id}, {status: status});
     res.redirect(`back`);
 }
+
+// add some contents
