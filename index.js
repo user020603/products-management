@@ -5,6 +5,9 @@ const database = require("./config/database.js");
 const systemCofig = require("./config/system.js");
 const methodOverride = require("method-override");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const flash = require("express-flash");
 
 require("dotenv").config();
 const app = express();
@@ -19,6 +22,12 @@ database.connect();
 // Link with pug
 app.set("views", "./views");
 app.set("view engine", "pug");
+
+// Flash
+app.use(cookieParser("02062003"));
+app.use(session({ cookie: {maxAge: 60000} }));
+app.use(flash());
+// End Flash
 
 // App local variables
 app.locals.prefixAdmin = systemCofig.prefixAdmin;
