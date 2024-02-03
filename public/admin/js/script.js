@@ -1,6 +1,6 @@
 // Button Status
 const buttonStatus = document.querySelectorAll("[button-status]");
-console.log(buttonStatus);
+// console.log(buttonStatus);
 if (buttonStatus.length > 0) {
     let url = new URL(window.location.href);
     // console.log(url);
@@ -121,7 +121,12 @@ if (formChangeMulti) {
             const inputIds = formChangeMulti.querySelector("input[name='ids']");
             inputsChecked.forEach(input => {
                 const id = input.value;
-                ids.push(id);
+                if (typeChange == `change-position`) {
+                    const position = input.closest("tr").querySelector("input[name='position']").value;
+                    // console.log(position.value);
+                    ids.push(`${id}-${position}`);
+                }
+                else ids.push(id);
             });
             // console.log(ids.join(", "));
             inputIds.value = ids.join(", ");

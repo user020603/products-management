@@ -33,6 +33,7 @@ block main
                         th Hinh anh
                         th Tieu de
                         th Gia 
+                        th Vi tri
                         th Trang thai
                         th Hanh dong 
                 tbody 
@@ -49,6 +50,14 @@ block main
                                 img(src=item.thumbnail, alt=item.title width="100px", height="auto")
                             td #{item.title}
                             td #{item.price}$
+                            td 
+                                input(
+                                    type="number"
+                                    value=item.position 
+                                    style="width: 70px"
+                                    min="1"
+                                    name="position"
+                                )
                             td 
                                 if (item.status == "active")
                                     a(
