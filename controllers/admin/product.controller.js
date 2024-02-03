@@ -78,6 +78,8 @@ module.exports.changeMulti = async (req, res) => {
             break;
         case "delete-all":
             await Product.updateMany({ _id: ids }, { deleted: true, deletedAt: new Date()});
+            req.flash("success", `Xoa thanh cong ${ids.length} san pham!`);
+            break;
         case "change-position": 
             // console.log(ids);
             for (const item of ids) {
@@ -88,6 +90,7 @@ module.exports.changeMulti = async (req, res) => {
                     position: position
                 });
             }
+            req.flash("success", `Cap nhat vi tri thanh cong ${ids.length} san pham!`);
             break;
         default:
             break;
