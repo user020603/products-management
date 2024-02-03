@@ -68,7 +68,11 @@ block main
                                     ) Ngung hoat dong
                             td 
                                 button(class="btn btn-warning btn-sm") Sua 
-                                button(class="btn btn-danger btn-sm ml-1") Xoa
+                                button(
+                                    class="btn btn-danger btn-sm ml-1"
+                                    button-delete
+                                    data-id=item.id
+                                ) Xoa
 
     +pagination(pagination)
 
@@ -78,5 +82,13 @@ block main
         id="form-change-status"
         data-path = `${prefixAdmin}/products/change-status`
     ) 
+
+    form(
+        action="",
+        method="post"
+        id="form-delete-item"
+        data-path = `${prefixAdmin}/products/delete`
+    ) 
+
 
     script(src="/admin/js/product.js") 

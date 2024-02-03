@@ -32,12 +32,12 @@ module.exports.index = async (req, res) => {
         {
             currentPage: 1,
             limitItems: 4
-        }, 
-        req.query, 
+        },
+        req.query,
         countProducts
     )
     // End pagination
-    const products = await Product.find(find).limit(objectPagination.limitItems).skip(objectPagination.skip);
+    const products = await Product.find(find).skip(objectPagination.skip).limit(objectPagination.limitItems);
     // console.log(products);
 
     res.render("admin/pages/products/index.pug", {
@@ -50,31 +50,36 @@ module.exports.index = async (req, res) => {
 }
 
 // [PATCH] /admin/products/change-status/:status/:id
-
 module.exports.changeStatus = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
-    await Product.updateOne({_id : id}, {status: status});
+    await Product.updateOne({ _id: id }, { status: status });
     res.redirect(`back`);
 }
 
 // [PATCH] /admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
-    // console.log(req.body);
+    console.log(req.body);
     const type = req.body.type;
     const ids = req.body.ids.split(", ");
 
     switch (type) {
         case "active":
-            await Product.updateMany({_id: ids}, {status: "active"});
+            await Product.updateMany({ _id: ids }, { status: "active" });
             break;
-        case "inactive": 
-            await Product.updateMany({_id: ids}, {status: "inactive"});
+        case "inactive":
+            await Product.updateMany({ _id: ids }, { status: "inactive" });
             break;
-        default: 
+        default:
             break;
-
     }
 
     res.redirect(`back`);
+}
+
+// [DELETE] /admin/products/deleteItem/:id
+module.exports.deleteItem = async (req, res) => {
+    const id = req.params.id;
+    await Product.deleteOne({ _id: id});
+    res.redirect("back");
 }

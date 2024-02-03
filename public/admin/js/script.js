@@ -1,5 +1,6 @@
 // Button Status
 const buttonStatus = document.querySelectorAll("[button-status]");
+console.log(buttonStatus);
 if (buttonStatus.length > 0) {
     let url = new URL(window.location.href);
     // console.log(url);
@@ -7,7 +8,7 @@ if (buttonStatus.length > 0) {
     buttonStatus.forEach(button => {
         button.addEventListener("click", () => {
             const status = button.getAttribute("button-status");
-            // console.log(status);
+            // console.log(status); 
             if (status) {
                 url.searchParams.set("status", status);
             }
@@ -58,6 +59,7 @@ if (buttonPagination) {
 
 // Checkbox Multi
 const checkboxMulti = document.querySelector("[checkbox-multi]");
+// console.log(checkboxMulti);
 if (checkboxMulti) {
     // console.log(checkboxMulti);
     const inputCheckAll = checkboxMulti.querySelector("input[name='checkall']");
@@ -98,6 +100,7 @@ if (formChangeMulti) {
         e.preventDefault();
 
         const checkboxMulti = document.querySelector("[checkbox-multi]");
+        // console.log(checkboxMulti);
         const inputsChecked = checkboxMulti.querySelectorAll(
             "input[name='id']:checked"
         )
@@ -105,12 +108,11 @@ if (formChangeMulti) {
         if (inputsChecked.length > 0) {
             let ids = []
             const inputIds = formChangeMulti.querySelector("input[name='ids']");
-
             inputsChecked.forEach(input => {
                 const id = input.value;
                 ids.push(id);
-            })
-            console.log(ids.join(", "));
+            });
+            // console.log(ids.join(", "));
             inputIds.value = ids.join(", ");
             formChangeMulti.submit();
         } else {
