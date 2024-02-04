@@ -4,6 +4,7 @@ const Product = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
+const systemConfig = require(`../../config/system`);
 
 module.exports.index = async (req, res) => {
     // console.log(req.query.status);
@@ -106,4 +107,31 @@ module.exports.deleteItem = async (req, res) => {
     // await Product.deleteOne({ _id: id});
     await Product.updateOne({ _id: id}, { deleted: true, deletedAt: new Date() });
     res.redirect("back");
+}
+
+// [GET] /admin/products/create
+module.exports.create = async (req, res) => {
+    res.render(`admin/pages/products/create`, {
+        pageTitle: "Tao moi san pham"
+    });
+};
+
+// [POST] /admin/products/create
+module.exports.createPost = async (req, res) => {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+
+    if (req.body.posistion == "") {
+        const countProducts = await Product.count();
+        req.body.position =  countProducts + 1; 
+    } else {
+        req.body.posistion = parseInt(req.body.position);
+    }
+    // console.log(req.body);
+
+    const product = new Product(req.body);
+    await product.save();
+
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
 }
