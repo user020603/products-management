@@ -23,13 +23,18 @@ block main
         .card-header Danh sach san pham
         .card-body
             .row
-                .col-8
+                .col-4
                     +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
-                .col-4 
+                .col-4
                     a(
                         href=`${prefixAdmin}/products/create`
                         class="btn btn-outline-success"
                     ) + Them moi
+                .col-4
+                    a(
+                        href=`${prefixAdmin}/products/bin`
+                        class="btn btn-outline-warning"
+                    ) Thung rac
             table(
                 class="table table-hover table-sm"
                 checkbox-multi
@@ -107,6 +112,5 @@ block main
         id="form-delete-item"
         data-path = `${prefixAdmin}/products/delete`
     ) 
-
 
     script(src="/admin/js/product.js") 

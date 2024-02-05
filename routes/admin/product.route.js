@@ -18,4 +18,10 @@ router.get("/create", controller.create);
 
 router.post("/create", upload.single("thumbnail"), controller.createPost);
 
+router.get("/bin", controller.bin);
+
+router.patch("/bin/restore/:id", controller.restoreItem);
+
+router.delete("/bin/delete-permanent/:id", controller.deletePermanent);
+
 module.exports = router;
