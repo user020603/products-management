@@ -48,36 +48,40 @@ if (buttonDelete.length > 0) {
 // Restore Item
 const buttonRestore = document.querySelectorAll("[button-restore]");
 if (buttonRestore.length > 0) {
-    const formRestore = document.querySelector("#form-restore-item");
-    const path = formRestore.getAttribute("data-path");
+  const formRestore = document.querySelector("#form-restore-item");
+  const path = formRestore.getAttribute("data-path");
 
-    buttonRestore.forEach((button) => {
-        button.addEventListener("click", () => {
-            const id = button.getAttribute("data-id");
-            localStorage.setItem('restoreItem', id);
-            const action = `${path}/${id}?_method=PATCH`;
-            formRestore.action = action;
-            formRestore.submit();
-        });
+  buttonRestore.forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = button.getAttribute("data-id");
+      localStorage.setItem("restoreItem", id);
+      const action = `${path}/${id}?_method=PATCH`;
+      formRestore.action = action;
+      formRestore.submit();
     });
+  });
 }
 
 // Delete Permanent
-const buttonDeletePermanent = document.querySelectorAll("[button-delete-permanent]");
+const buttonDeletePermanent = document.querySelectorAll(
+  "[button-delete-permanent]"
+);
 if (buttonDeletePermanent.length > 0) {
-    const formDeletePermanent = document.querySelector("#form-delete-permanent-item");
-    const path = formDeletePermanent.getAttribute("data-path");
+  const formDeletePermanent = document.querySelector(
+    "#form-delete-permanent-item"
+  );
+  const path = formDeletePermanent.getAttribute("data-path");
 
-    buttonDeletePermanent.forEach((button) => {
-        button.addEventListener("click", () => {
-            const isConfirm = confirm("Xoa vinh vien san pham?");
-            if (isConfirm) {
-                const id = button.getAttribute("data-id");
-                localStorage.setItem('deleteItem', id); // Save id in local storage
-                const action = `${path}/${id}?_method=DELETE`;
-                formDeletePermanent.action = action;
-                formDeletePermanent.submit();
-            } else return;
-        });
+  buttonDeletePermanent.forEach((button) => {
+    button.addEventListener("click", () => {
+      const isConfirm = confirm("Xoa vinh vien san pham?");
+      if (isConfirm) {
+        const id = button.getAttribute("data-id");
+        localStorage.setItem("deleteItem", id); // Save id in local storage
+        const action = `${path}/${id}?_method=DELETE`;
+        formDeletePermanent.action = action;
+        formDeletePermanent.submit();
+      } else return;
     });
+  });
 }
