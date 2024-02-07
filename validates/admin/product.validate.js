@@ -1,15 +1,15 @@
-module.exports.createPost = (req, res) => {
-  if (!req.body.title) {
-    req.flash("error", `Vui long nhap tieu de!`);
-    res.redirect(`back`);
+module.exports.createPost = async (req, res, next) => {
+  if(!req.body.title) {
+    req.flash("error", "Tiêu đề không được để trống!");
+    res.redirect("back");
     return;
   }
 
-  if (req.body.title.length < 8) {
+  if(req.body.title.length < 5) {
     req.flash("error", "Tiêu đề phải chứa ít nhất 5 ký tự!");
     res.redirect("back");
     return;
   }
 
   next();
-};
+}

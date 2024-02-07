@@ -184,3 +184,50 @@ module.exports.deletePermanent = async (req, res) => {
   await Product.deleteOne({ _id: id });
   res.redirect(`back`);
 };
+
+// [GET] /admin/products/edit/:id
+module.exports.edit = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const product = await Product.findOne({
+      _id: id,
+      deleted: false,
+    });
+    console.log(product);
+    res.render(`admin/pages/products/edit`, {
+      pageTitle: "Chinh sua san pham",
+      product: product,
+    });
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
+  }
+};
+
+// [PATCH] /admin/products/edit/:id
+module.exports.editPatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+    req.body.position = parseInt(req.body.position);
+
+    if (req.file && req.file.filename) {
+      req.body.thumbnail = `/uploads/${req.file.filename}`;
+    }
+
+    await Product.updateOne({
+      _id: id,
+      deleted: false
+    }, req.body);
+
+    req.flash("success", "Cap nhat san pham thanh cong!");
+
+    res.redirect(`back`);
+
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
+  }
+}

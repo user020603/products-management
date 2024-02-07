@@ -25,4 +25,8 @@ router.patch("/bin/restore/:id", controller.restoreItem);
 
 router.delete("/bin/delete-permanent/:id", controller.deletePermanent);
 
+router.get("/edit/:id", controller.edit);
+
+router.patch(`/edit/:id`, upload.single(`thumbnail`), validate.createPost, controller.editPatch);
+
 module.exports = router;
