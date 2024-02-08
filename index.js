@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({extends : false}));
 database.connect();
 
 // Link with pug
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 // Flash
@@ -32,7 +32,7 @@ app.use(flash());
 // App local variables
 app.locals.prefixAdmin = systemCofig.prefixAdmin;
 
-app.use(express.static("public"));
+app.use(express.static(`${__dirname}/public`));
 
 // routes
 route(app);
