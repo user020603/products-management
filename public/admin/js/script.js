@@ -170,3 +170,51 @@ if (uploadImage) {
   });
 }
 // End Preview Image
+
+// Sort
+const sort = document.querySelector("[sort]");
+const sortClear = document.querySelector("[sort-clear]");
+
+if (sort) {
+  let url = new URL(window.location.href);
+  const sortSelect = sort.querySelector("[sort-select]");
+
+  // console.log(sortSelect);
+  // console.log(sortClear);
+
+  sortSelect.addEventListener("change", (e) => {
+    const value = e.target.value;
+    const [sortKey, sortValue] = value.split("-");
+
+    url.searchParams.set("sortKey", sortKey);
+    url.searchParams.set("sortValue", sortValue);
+
+    window.location.href = url.href;
+  });
+
+  const sortKey = url.searchParams.get("sortKey");
+  const sortValue = url.searchParams.get("sortValue");
+
+  if (sortKey && sortValue) {
+    const string = `${sortKey}-${sortValue}`;
+    const optionSelected = sortSelect.querySelector(
+      `option[value="${string}"]`
+    );
+    optionSelected.selected = true;
+    // optionSelected.setAttribute("selected", true);
+  }
+}
+// End Sort
+
+// Remove Sort
+if (sortClear) {
+  let url = new URL(window.location.href);
+  sortClear.addEventListener("click", (e) => {
+    console.log(e);
+    url.searchParams.delete("sortKey");
+    url.searchParams.delete("sortValue");
+
+    window.location.href = url.href;
+  });
+}
+// End Remove Sort
