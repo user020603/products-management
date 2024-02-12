@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const routeAdmin = require("./routes/admin/index.route.js");
 const route = require("./routes/client/index.route.js");
 const database = require("./config/database.js");
@@ -15,7 +16,7 @@ const port = process.env.PORT;
 
 app.use(methodOverride("_method"));
 
-app.use(bodyParser.urlencoded({extends : false}));
+app.use(bodyParser.urlencoded({ extends: false }));
 
 database.connect();
 
@@ -25,9 +26,16 @@ app.set("view engine", "pug");
 
 // Flash
 app.use(cookieParser("02062003"));
-app.use(session({ cookie: {maxAge: 60000} }));
+app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 // End Flash
+
+// TinyMCE
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
+// End TinyMCE
 
 // App local variables
 app.locals.prefixAdmin = systemCofig.prefixAdmin;
@@ -41,7 +49,7 @@ routeAdmin(app);
 // Start the server
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
-}); 
+});
 
 // check process run in port and kill them
 // lsof -i :port
