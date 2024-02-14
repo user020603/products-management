@@ -40,13 +40,13 @@ module.exports.index = async (req, res) => {
   // End pagination
 
   // Sort
-    let sort = {};
+  let sort = {};
 
-    if (req.query.sortKey && req.query.sortValue) {
-      sort[req.query.sortKey] = req.query.sortValue;
-    } else {
-      sort.position = `desc`;
-    }
+  if (req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  } else {
+    sort.position = `desc`;
+  }
   // End Sort
 
   const products = await Product.find(find)
@@ -229,19 +229,21 @@ module.exports.editPatch = async (req, res) => {
       req.body.thumbnail = `/uploads/${req.file.filename}`;
     }
 
-    await Product.updateOne({
-      _id: id,
-      deleted: false
-    }, req.body);
+    await Product.updateOne(
+      {
+        _id: id,
+        deleted: false,
+      },
+      req.body
+    );
 
     req.flash("success", "Cap nhat san pham thanh cong!");
 
     res.redirect(`back`);
-
   } catch (error) {
     res.redirect(`/${systemConfig.prefixAdmin}/products`);
   }
-}
+};
 
 // [GET] /admin/products/detail/:id
 module.exports.detail = async (req, res) => {
@@ -252,7 +254,7 @@ module.exports.detail = async (req, res) => {
       _id: id,
       deleted: false,
     });
-    console.log(product);
+    // console.log(product);
     res.render(`admin/pages/products/detail`, {
       pageTitle: product.title,
       product: product,
