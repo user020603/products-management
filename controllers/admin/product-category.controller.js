@@ -65,7 +65,7 @@ module.exports.edit = async (req, res) => {
 
     const newRecords = createTreeHelper.tree(records);
 
-    console.log(data);
+    // console.log(data);
     res.render("admin/pages/products-category/edit", {
       pageTitle: "Chỉnh sửa danh mục sản phẩm",
       data: data,
@@ -80,12 +80,39 @@ module.exports.edit = async (req, res) => {
 module.exports.editPatch = async (req, res) => {
   const id = req.params.id;
 
-  console.log(id);
-  console.log(req.body);
-
   req.body.position = parseInt(req.body.position);
 
   await ProductCategory.updateOne({ _id: id }, req.body);
 
   res.redirect(`back`);
 };
+
+// [DELETE] /admin/products-category/delete/:id
+module.exports.deleteCategory = async (req, res) => {
+  const id = req.params.id;
+
+  // await Product.deleteOne({ _id: id});
+  await ProductCategory.updateOne(
+    { _id: id },
+    { deleted: true, deletedAt: new Date() }
+  );
+  res.redirect("back");
+};
+
+// [GET] /admin/products-category/detail/:id
+module.exports.detail = async (req, res) => {
+  const id = req.params.id;
+
+  const category = await ProductCategory.findOne({
+    _id: id,
+    deleted: false
+  })
+
+  // console.log(category)
+
+  res.render("admin/pages/products-category/detail", {
+    pageTitle: "Trang chi tiết danh mục",
+    category: category
+  })
+};
+

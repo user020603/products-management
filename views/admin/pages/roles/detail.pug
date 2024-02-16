@@ -1,0 +1,9 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  if(data.title)
+    h1(class="mb-4") #{data.title}
+
+  if (data.description)
+    div(class="mb-4") Mô tả: <b>#{data.description}</b>

@@ -1,0 +1,42 @@
+//-   _id: new ObjectId('65ce18d3dff5fbc1e5783721'),
+//-   title: 'Samsung',
+//-   parent_id: '',
+//-   description: '',
+//-   status: 'active',
+//-   position: 5,
+//-   deleted: false,
+//-   createdAt: 2024-02-15T13:59:47.921Z,
+//-   updatedAt: 2024-02-15T13:59:47.921Z,
+//-   slug: 'samsung',
+//-   __v: 0
+
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  if(category.title)
+    h1(class="mb-4") #{category.title}
+
+  if (category.description)
+    div(class="mb-4") Mô tả: <b>#{category.description}$</b>
+
+  if (category.parent_id)
+    div(class="mb-4") Parent ID: <b>#{category.parent_id}</b>
+
+  if (category.status)
+    div(class="mb-4")
+      span Trạng thái:
+      if (category.status === "active")
+        span(class="badge badge-success") Hoạt động
+      else
+        span(class="badge badge-danger") Dừng hoạt động
+
+  if (category.position)
+    div(class="mb-4") Vị trí: <b>#{category.position}</b>
+
+  a(
+    href=`${prefixAdmin}/products-category/edit/${category.id}`
+    class="btn btn-warning"
+  ) Chỉnh sửa
+
+  script(src="/admin/js/product.js") 

@@ -20,8 +20,6 @@ router.delete("/delete/:id", controller.deleteItem);
 
 router.get("/create", controller.create);
 
-
-
 router.post(
   "/create",
   upload.single("thumbnail"),
