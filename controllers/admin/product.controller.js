@@ -214,10 +214,16 @@ module.exports.edit = async (req, res) => {
       _id: id,
       deleted: false,
     });
+    const category = await ProductCategory.find({
+      deleted: false,
+    });
+  
+    const newCategory = createTreeHelper.tree(category);
     console.log(product);
     res.render(`admin/pages/products/edit`, {
       pageTitle: "Chinh sua san pham",
       product: product,
+      category: newCategory
     });
   } catch (error) {
     res.redirect(`/${systemConfig.prefixAdmin}/products`);
