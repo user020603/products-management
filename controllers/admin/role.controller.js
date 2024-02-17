@@ -73,10 +73,7 @@ module.exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
 
-    await Role.updateOne(
-      { _id: id },
-      { deleted: true, deletedAt: new Date() }
-    );
+    await Role.updateOne({ _id: id }, { deleted: true, deletedAt: new Date() });
 
     req.flash("success", "Xóa quyền thành công!");
   } catch (error) {
@@ -101,5 +98,40 @@ module.exports.detail = async (req, res) => {
     });
   } catch {
     res.redirect(`${systemConfig.prefixAdmin}/roles`);
+  }
+};
+
+// [GET] /admin/roles/permissions
+module.exports.permissions = async (req, res) => {
+  try {
+    let find = {
+      deleted: false,
+    };
+
+    const records = await Role.find(find);
+    // console.log(records)
+    res.render("admin/pages/roles/permissions", {
+      pageTitle: "Phân quyền",
+      records: records,
+    });
+  } catch {
+    res.redirect(`${systemConfig.prefixAdmin}/roles`);
+  }
+};
+
+// [PATCH] /admin/roles/permissions
+module.exports.permissionsPatch = async (req, res) => {
+  try {
+    const permissions = JSON.parse(req.body.permissions);
+
+    for (const item of permissions) {
+      await Role.updateOne({ _id: item.id }, { permissions: item.permissions });
+    }
+
+    req.flash("success", "Cập nhật phân quyền thành công!");
+
+    res.redirect("back");
+  } catch (error) {
+    req.flash("error", "Cập nhật phân quyền thất bại!");
   }
 };
