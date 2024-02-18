@@ -10,4 +10,5 @@ module.exports.loginPost = async (req, res, next) => {
       res.redirect("back");
       return;
     }
+    next();
 }
