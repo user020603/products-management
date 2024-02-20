@@ -57,15 +57,15 @@ module.exports.index = async (req, res) => {
     .limit(objectPagination.limitItems);
   // console.log(products);
 
-    for (const product of products) {
-      const account = await Account.findOne({
-        _id: product.createdBy.accountId
-      });
+  for (const product of products) {
+    const account = await Account.findOne({
+      _id: product.createdBy.accountId,
+    });
 
-      if(account) {
-        product.createdBy.fullName = account.fullName;
-      }
+    if (account) {
+      product.createdBy.fullName = account.fullName;
     }
+  }
 
   res.render("admin/pages/products/index.pug", {
     pageTitle: "Danh sách sản phẩm",
@@ -106,7 +106,13 @@ module.exports.changeMulti = async (req, res) => {
     case "delete-all":
       await Product.updateMany(
         { _id: ids },
-        { deleted: true, deletedAt: new Date() }
+        {
+          deleted: true,
+          deletedBy: {
+            accountId: res.locals.user.id,
+            deletedAt: new Date(),
+          },
+        }
       );
       req.flash("success", `Xóa thành công ${ids.length} sản phẩm!`);
       break;
@@ -142,7 +148,13 @@ module.exports.deleteItem = async (req, res) => {
   // await Product.deleteOne({ _id: id});
   await Product.updateOne(
     { _id: id },
-    { deleted: true, deletedAt: new Date() }
+    {
+      deleted: true,
+      deletedBy: {
+        accountId: res.locals.user.id,
+        deletedAt: new Date(),
+      },
+    }
   );
   res.redirect("back");
 };
@@ -180,7 +192,7 @@ module.exports.createPost = async (req, res) => {
   // }
   req.body.createdBy = {
     accountId: res.locals.user.id,
-    createdAt: new Date()
+    createdAt: new Date(),
   };
   const product = new Product(req.body);
   await product.save();
@@ -231,13 +243,13 @@ module.exports.edit = async (req, res) => {
     const category = await ProductCategory.find({
       deleted: false,
     });
-  
+
     const newCategory = createTreeHelper.tree(category);
     console.log(product);
     res.render(`admin/pages/products/edit`, {
       pageTitle: "Chỉnh sửa sản phẩm",
       product: product,
-      category: newCategory
+      category: newCategory,
     });
   } catch (error) {
     res.redirect(`/${systemConfig.prefixAdmin}/products`);
