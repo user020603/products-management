@@ -5,6 +5,7 @@ const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require(`../../config/system`);
 const createTreeHelper = require("../../helpers/createTree");
+const Account = require("../../models/account.model");
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -55,6 +56,16 @@ module.exports.index = async (req, res) => {
     .skip(objectPagination.skip)
     .limit(objectPagination.limitItems);
   // console.log(products);
+
+    for (const product of products) {
+      const account = await Account.findOne({
+        _id: product.createdBy.accountId
+      });
+
+      if(account) {
+        product.createdBy.fullName = account.fullName;
+      }
+    }
 
   res.render("admin/pages/products/index.pug", {
     pageTitle: "Danh sách sản phẩm",
@@ -167,6 +178,10 @@ module.exports.createPost = async (req, res) => {
   // if (req.file) {
   //   req.body.thumbnail = `/uploads/${req.file.filename}`;
   // }
+  req.body.createdBy = {
+    accountId: res.locals.user.id,
+    createdAt: new Date()
+  };
   const product = new Product(req.body);
   await product.save();
 
