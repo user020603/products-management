@@ -44,7 +44,7 @@ module.exports.createPost = async (req, res) => {
   });
   if (emailExist) {
     req.flash("error", `Email ${req.body.email} đã tồn tại.`);
-    res.redirect("back"); 
+    res.redirect("back");
   } else {
     req.body.password = md5(req.body.password);
     const record = new Account(req.body);
@@ -98,4 +98,25 @@ module.exports.editPatch = async (req, res) => {
     req.flash("success", "Cập nhật tài khoản thành công!");
   }
   res.redirect("back");
+};
+
+// [PATCH] /admin/accounts/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+  const id = req.params.id;
+  const status = req.params.status;
+  await Account.updateOne({ _id: id }, { status: status });
+  req.flash("success", "Cập nhật trạng thái thành công!");
+  res.redirect(`back`);
+};
+
+// [DELETE] /admin/roles/delete/:id
+module.exports.deleteItem = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await Account.updateOne({ _id: id }, { deleted: true, deletedAt: new Date() });
+    req.flash("success", "Xóa tài khoản thành công!");
+  } catch (error) {
+    req.flash("error", "Xóa tài khoản thất bại!");
+  }
+  res.redirect(`back`);
 };

@@ -3,44 +3,35 @@ const buttonsChangeStatus = document.querySelectorAll("[button-change-status]");
 if (buttonsChangeStatus.length > 0) {
   const formChangeStatus = document.querySelector("#form-change-status");
   const path = formChangeStatus.getAttribute("data-path");
-  // console.log(path);
-  // console.log(formChangeStatus);
-
   buttonsChangeStatus.forEach((button) => {
     button.addEventListener("click", () => {
-      const statusCurrent = button.getAttribute("data-status");
       const id = button.getAttribute("data-id");
-
-      let statusChange = statusCurrent == "active" ? "inactive" : "active";
-
+      const currentStatus = button.getAttribute("data-status");
+      let statusChange = currentStatus == "active" ? "inactive" : "active";
       const action = path + `/${statusChange}/${id}?_method=PATCH`;
       formChangeStatus.action = action;
-
       formChangeStatus.submit();
     });
   });
 }
 // End Change Status
 
-// Delete Category
-const buttonDeleteCategory = document.querySelectorAll(
-  "[button-delete-category]"
-);
-if (buttonDeleteCategory.length > 0) {
-  const formDeleteCategory = document.querySelector("#form-delete-category");
-  const path = formDeleteCategory.getAttribute("data-path");
-  console.log(path);
+// Delete Item
+const buttonDeleteItem = document.querySelectorAll("[button-delete-item]");
+if (buttonDeleteItem.length > 0) {
+  const formDeleteItem = document.querySelector("#form-delete-item");
+  const path = formDeleteItem.getAttribute("data-path");
 
-  buttonDeleteCategory.forEach((button) => {
+  buttonDeleteItem.forEach((button) => {
     button.addEventListener("click", () => {
       const isConfirm = confirm("Ban co chac muon xoa khong?");
       if (isConfirm) {
         const id = button.getAttribute("data-id");
         const action = `${path}/${id}?_method=DELETE`;
-        formDeleteCategory.action = action;
-        formDeleteCategory.submit();
+        formDeleteItem.action = action;
+        formDeleteItem.submit();
       } else return;
     });
   });
 }
-// End Delete Category
+// End Delete Item

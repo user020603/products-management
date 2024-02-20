@@ -1,5 +1,3 @@
-// [GET] /admin/products
-
 const Product = require("../../models/product.model");
 const ProductCategory = require("../../models/product-category.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
@@ -8,6 +6,7 @@ const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require(`../../config/system`);
 const createTreeHelper = require("../../helpers/createTree");
 
+// [GET] /admin/products
 module.exports.index = async (req, res) => {
   // console.log(req.query.status);
 
@@ -58,7 +57,7 @@ module.exports.index = async (req, res) => {
   // console.log(products);
 
   res.render("admin/pages/products/index.pug", {
-    pageTitle: "Danh sach san pham",
+    pageTitle: "Danh sách sản phẩm",
     products: products,
     filterStatus: filterStatus,
     keyword: objectSearch.keyword,
@@ -72,7 +71,7 @@ module.exports.changeStatus = async (req, res) => {
   const id = req.params.id;
   await Product.updateOne({ _id: id }, { status: status });
 
-  req.flash("success", "Cap nhat trang thai thanh cong!");
+  req.flash("success", "Cập nhật trạng thái thành công!");
 
   res.redirect(`back`);
 };
@@ -86,19 +85,19 @@ module.exports.changeMulti = async (req, res) => {
   switch (type) {
     case "active":
       await Product.updateMany({ _id: ids }, { status: "active" });
-      req.flash("success", `Cap nhat thanh cong ${ids.length} san pham!`);
+      req.flash("success", `Cập nhật thành công ${ids.length} sản phẩm!`);
 
       break;
     case "inactive":
       await Product.updateMany({ _id: ids }, { status: "inactive" });
-      req.flash("success", `Cap nhat thanh cong ${ids.length} san pham!`);
+      req.flash("success", `Cập nhật thành công ${ids.length} sản phẩm!`);
       break;
     case "delete-all":
       await Product.updateMany(
         { _id: ids },
         { deleted: true, deletedAt: new Date() }
       );
-      req.flash("success", `Xoa thanh cong ${ids.length} san pham!`);
+      req.flash("success", `Xóa thành công ${ids.length} sản phẩm!`);
       break;
     case "change-position":
       // console.log(ids);
@@ -115,7 +114,7 @@ module.exports.changeMulti = async (req, res) => {
       }
       req.flash(
         "success",
-        `Cap nhat vi tri thanh cong ${ids.length} san pham!`
+        `Cập nhật vị trí thành công ${ids.length} sản phẩm!`
       );
       break;
     default:
@@ -146,7 +145,7 @@ module.exports.create = async (req, res) => {
   const newCategory = createTreeHelper.tree(category);
   // console.log(newCategory)
   res.render(`admin/pages/products/create`, {
-    pageTitle: "Tao moi san pham",
+    pageTitle: "Tạo mới sản phẩm",
     category: newCategory,
   });
 };
@@ -183,7 +182,7 @@ module.exports.bin = async (req, res) => {
   const productsBin = await Product.find(findBin);
 
   res.render("admin/pages/products/bin", {
-    pageTitle: "Thung rac",
+    pageTitle: "Thùng rác",
     products: productsBin,
   });
 };
@@ -221,7 +220,7 @@ module.exports.edit = async (req, res) => {
     const newCategory = createTreeHelper.tree(category);
     console.log(product);
     res.render(`admin/pages/products/edit`, {
-      pageTitle: "Chinh sua san pham",
+      pageTitle: "Chỉnh sửa sản phẩm",
       product: product,
       category: newCategory
     });
@@ -252,7 +251,7 @@ module.exports.editPatch = async (req, res) => {
       req.body
     );
 
-    req.flash("success", "Cap nhat san pham thanh cong!");
+    req.flash("success", "Cập nhật sản phẩm thành công!");
 
     res.redirect(`back`);
   } catch (error) {

@@ -7,11 +7,11 @@ mixin form-change-multi(path)
         .d-flex.align-items-start
             .form-group 
                 select(name="type" class="form-control") 
-                    option(disable selected) -- Chon hanh dong --
-                    option(value="active") Hoat dong 
-                    option(value="inactive") Dung hoat dong
-                    option(value="delete-all") Xoa tat ca
-                    option(value="change-position") Thay doi vi tri
+                    option(disable selected) -- Chọn hành động --
+                    option(value="active") Hoạt động   
+                    option(value="inactive") Ngừng hoạt động
+                    option(value="delete-all") Xóa tất cả
+                    option(value="change-position") Thay đổi vị trí
             .form-group 
                 input(
                     type="text"
@@ -19,4 +19,4 @@ mixin form-change-multi(path)
                     value=""
                     class="form-control d-none"
                 )
-            button(type="submit" class="btn btn-primary") Ap dung
+            button(type="submit" class="btn btn-primary") Áp dụng
