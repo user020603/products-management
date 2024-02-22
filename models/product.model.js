@@ -41,6 +41,7 @@ const productSchema = new mongoose.Schema(
         fullName: String
       }
     ],
+    featured: String,
     restoreAt: Date,
   },
   {
