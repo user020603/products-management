@@ -6,6 +6,7 @@ const roleRouters = require("./role.route");
 const accountRouters = require("./account.route");
 const authRouters = require("./auth.route");
 const authMiddleware = require("../../middlewares/admin/auth.middleware");
+const myAccountRouters = require("./my-account.route");;
 
 module.exports = (app) => {
     const PATH_ADMIN = systemCofig.prefixAdmin;
@@ -15,4 +16,5 @@ module.exports = (app) => {
     app.use(PATH_ADMIN + `/roles`, authMiddleware.requireAuth, roleRouters);
     app.use(PATH_ADMIN + `/accounts`, authMiddleware.requireAuth, accountRouters);
     app.use(PATH_ADMIN + `/auth`, authRouters);
+    app.use(PATH_ADMIN + `/my-account`, authMiddleware.requireAuth, myAccountRouters);
 }
