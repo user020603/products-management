@@ -63,6 +63,7 @@ block main
                             th Vị trí
                             th Trạng thái
                             th Tạo bởi
+                            th Cập nhật bởi
                             th Hành động
                     tbody 
                         each item, index in products
@@ -104,10 +105,16 @@ block main
                                                 button-change-status
                                                 class="badge badge-danger"
                                             ) Ngừng hoạt động
-                                td
+                                td  
                                     p #{item.createdBy.fullName}
                                     if(item.createdBy.createdAt)
                                         +formatDateTime(item.createdBy.createdAt)  
+                                td
+                                    - const updatedBy = item.updatedBy.slice(-1)[0]
+                                    if (updatedBy)
+                                        p #{updatedBy.fullName}
+                                        +formatDateTime(item.updatedBy.updatedAt)  
+
                                 td 
                                     a(
                                         class="btn btn-info btn-sm"
