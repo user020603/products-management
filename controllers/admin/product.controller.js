@@ -265,7 +265,7 @@ module.exports.edit = async (req, res) => {
     });
 
     const newCategory = createTreeHelper.tree(category);
-    console.log(product);
+    // console.log(product);
     res.render(`admin/pages/products/edit`, {
       pageTitle: "Chỉnh sửa sản phẩm",
       product: product,
