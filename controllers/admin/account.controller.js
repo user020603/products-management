@@ -120,3 +120,27 @@ module.exports.deleteItem = async (req, res) => {
   }
   res.redirect(`back`);
 };
+
+// [GET] /admin/roles/detail/:id
+module.exports.detail = async (req, res) => {
+  try {
+    const id = req.params.id
+    const record = await Account.findOne({
+      _id: id
+    })
+    const role_id = record.role_id;
+    
+    const dataRole = await Role.findOne({
+      _id: role_id
+    })
+    // console.log(dataRole);
+    res.render("admin/pages/accounts/detail", {
+      pageTitle: "Chi tiết tài khoản",
+      user: record,
+      dataRole: dataRole
+    });
+  }
+  catch (error) {
+    res.redirect("back");
+  }
+};

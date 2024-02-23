@@ -50,13 +50,13 @@ if (tablePermissions) {
         });
       }
     });
-    console.log(permissions);
+    // console.log(permissions);
 
     if (permissions.length > 0) {
       const formChangePermissions = document.querySelector(
         "[form-change-permissions]"
       );
-      console.log(formChangePermissions);
+      // console.log(formChangePermissions);
       const inputPermissions = formChangePermissions.querySelector(
         "input[name='permissions']"
       );
