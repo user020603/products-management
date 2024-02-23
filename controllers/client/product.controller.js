@@ -20,54 +20,66 @@ module.exports.index = async (req, res) => {
   });
 };
 
-// [GET] /products/:slug
+// [GET] /products/detail/:slug
 module.exports.detail = async (req, res) => {
   try {
-    const slug = req.params.slug;
+    const slug = req.params.slugProduct;
+
+    // console.log(slug);
 
     const product = await Product.findOne({
       slug: slug,
       deleted: false,
-      status: "active"
+      status: "active",
     });
 
-    console.log(product);
+    if (product.product_category_id) {
+      const category = await ProductCategory.findOne({
+        _id: product.product_category_id,
+        status: "active",
+        deleted: "false",
+      });
+      product.category = category;
+    }
+
+    product.priceNew = productsHelper.priceNewProduct(product)
 
     res.render("client/pages/products/detail", {
       pageTitle: product.title,
-      product: product
+      product: product,
     });
   } catch (error) {
     res.redirect("/");
   }
-}
+};
 
 // [GET] /products/:slugCategory
 module.exports.category = async (req, res) => {
   // console.log(req.params)
   const category = await ProductCategory.findOne({
     slug: req.params.slugCategory,
-    deleted: false
-  })
-
-  const allCategory = await productsCategoryHelper.getSubCategory(category.id)
-  const allCategoryId = allCategory.map(item => item.id);
-
-  const products = await Product.find({
-    product_category_id: {
-      $in: [
-        category.id,
-        ...allCategoryId
-      ]
-    },
-    deleted: false
-  }).sort({ position: "desc" })
-  
-  // console.log(category)
-  const newProducts = productsHelper.priceNewProducts(products);
-
-  res.render("client/pages/products/index", {
-    pageTitle: category.title,
-    products: newProducts,
+    status: "active",
+    deleted: false,
   });
-}
+  if (category.id) {
+    const allCategory = await productsCategoryHelper.getSubCategory(
+      category.id
+    );
+    const allCategoryId = allCategory.map((item) => item.id);
+
+    const products = await Product.find({
+      product_category_id: {
+        $in: [category.id, ...allCategoryId],
+      },
+      deleted: false,
+    }).sort({ position: "desc" });
+
+    // console.log(category)
+    const newProducts = productsHelper.priceNewProducts(products);
+
+    res.render("client/pages/products/index", {
+      pageTitle: category.title,
+      products: newProducts,
+    });
+  }
+};
