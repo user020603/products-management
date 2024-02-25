@@ -34,7 +34,7 @@ block main
 
       .col-12
 
-        table(class="table table-bordered")
+        table(class="table table-bordered" table-cart)
 
           thead
 
@@ -98,7 +98,7 @@ block main
 
                       min="1"
 
-                      item-id=item.product_id
+                      product-id=item.product_id
 
                       style="width: 60px"
 
@@ -133,3 +133,5 @@ block main
         div(class="text-right mt-3")
 
           a(href="/checkout" class="btn btn-success") THANH TOÁN
+    
+    script(src="/js/cart.js")
