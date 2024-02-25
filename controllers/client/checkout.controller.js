@@ -1,6 +1,7 @@
 const Cart = require("../../models/cart.model");
 const Product = require("../../models/product.model");
 const productsHelper = require("../../helpers/products");
+const Order = require("../../models/order.model");
 
 // [GET] /checkout/
 module.exports.index = async (req, res) => {
@@ -27,4 +28,45 @@ module.exports.index = async (req, res) => {
     pageTitle: "Đặt hàng",
     cartDetail: cart,
   });
+};
+
+// [POST] /checkout/order
+module.exports.orderPost = async (req, res) => {
+  const cartId = req.cookies.cartId;
+  const infoUser = req.body;
+
+  const orderInfo = {
+    cart_id: cartId,
+    userInfo: infoUser,
+    products: [],
+  };
+
+  const cart = await Cart.findOne({
+    _id: cartId,
+  });
+
+  for (const product of cart.products) {
+    const infoProduct = await Product.findOne({
+      _id: product.product_id,
+    });
+    const objectProduct = {
+      product_id: product.product_id,
+      price: infoProduct.price,
+      discountPercantage: infoProduct.discountPercentage,
+      quantity: product.quantity,
+    };
+    orderInfo.products.push(objectProduct);
+  }
+  const order = new Order(orderInfo);
+  await order.save();
+
+  await Cart.updateOne(
+    {
+      _id: cartId,
+    },
+    {
+      products: [],
+    }
+  );
+  res.redirect(`/checkout/success/${order.id}`);
 };
