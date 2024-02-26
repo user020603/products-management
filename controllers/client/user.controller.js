@@ -2,6 +2,7 @@ const md5 = require("md5");
 const User = require("../../models/user.model");
 const generateHelper = require("../../helpers/generate");
 const ForgotPassword = require("../../models/forgot-password.model");
+const sendMailHelper = require("../../helpers/sendMail");
 
 // [GET] /user/register
 module.exports.register = async (req, res) => {
@@ -107,13 +108,17 @@ module.exports.forgotPasswordPost = async (req, res) => {
   const objectForgotPassword = {
     email: email,
     otp: otp,
-    expiresAt: Date.now() + 1,
+    expiresAt: Date.now(),
   };
 
   const record = new ForgotPassword(objectForgotPassword);
   await record.save();
 
   // Việc 2: Gửi mã OTP qua email
+  const subject = `Mã OTP lấy lại lại mật khẩu`;
+  const gifUrl = 'https://pa1.narvii.com/6516/c79feb51a0018d53c926b6c5314b403353c0eb97_hq.gif';
+  const content = `Mã OTP của bạn là <b>${otp}</b>. Vui lòng không chia sẻ với bất cứ ai.<br><br><img src="${gifUrl}" alt="Your GIF">`;
+  sendMailHelper.sendMail(email, subject, content);
   res.redirect(`/user/password/otp?email=${email}`);
 };
 
@@ -150,4 +155,28 @@ module.exports.otpPasswordPost = async (req, res) => {
 
     res.cookie("tokenUser", user.tokenUser);
     res.redirect("/user/password/reset");
+}
+
+// [GET] /user/password/reset
+module.exports.resetPassword = async (req, res) => {
+  res.render("client/pages/user/reset-password", {
+    pageTitle: "Đổi mật khẩu",
+  });
+};
+
+// [POST] /user/password/reset
+module.exports.resetPasswordPost = async (req, res) => {
+  const password = req.body.password;
+  const tokenUser = req.cookies.tokenUser;
+
+  try {
+    await User.updateOne({
+      tokenUser: tokenUser
+    }, {
+      password: md5(password)
+    });
+    res.redirect("/")
+  } catch(error) {
+    res.redirect("/");
+  }
 }
