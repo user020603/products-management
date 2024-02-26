@@ -17,7 +17,7 @@ module.exports.generalPatch = async (req, res) => {
         iframeCode = iframeCode.replace('<iframe ', '<iframe width="100%" height="450" ');
         req.body.iframe = iframeCode;
     }
-    console.log(req.body);
+    // console.log(req.body);
     if (settingsGeneral) {
         await SettingGeneral.updateOne({
             _id: settingsGeneral.id
