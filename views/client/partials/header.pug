@@ -44,5 +44,7 @@ header.header
                 a(href="/user/login") Đăng nhập
             else 
               li
+                a(href="/user/info") #{user.fullName}
+              li
                 a(href="/user/logout") Đăng xuất            
             //- div #{user}
