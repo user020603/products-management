@@ -1,7 +1,7 @@
 const User = require("../../models/user.model");
 
 module.exports.requireAuth = async (req, res, next) => {
-  if(!req.cookies.tokenUser) {
+  if (!req.cookies.tokenUser) {
     res.redirect("/user/login");
   } else {
     const user = await User.findOne({
@@ -9,12 +9,11 @@ module.exports.requireAuth = async (req, res, next) => {
       deleted: false,
     }).select("-password");
 
-    if(!user) {
+    if (!user) {
       res.redirect("/user/login");
     } else {
       res.locals.infoUser = user;
-
       next();
     }
   }
-}
+};
