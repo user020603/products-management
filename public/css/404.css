@@ -100,5 +100,5 @@ body {
 }
 
 .homeback:hover {
-    background-color: #0056b3;
+    background-color: hsl(211, 100%, 35%);
 }

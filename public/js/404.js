@@ -19,3 +19,8 @@ document.addEventListener("DOMContentLoaded",function(){
      }
      } 
    })
+
+const buttonBack = document.querySelector(".homeback");
+buttonBack.addEventListener("click", () => {
+    history.back();
+})
