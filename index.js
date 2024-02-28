@@ -20,10 +20,7 @@ const port = process.env.PORT;
 // SocketIO
 const server = http.createServer(app);
 const io = new Server(server);
-
-io.on("connection", (socket) => {
-  console.log("Successful Connected", socket.id);
-});
+global._io = io;
 // End SocketIO
 
 app.use(methodOverride("_method"));
