@@ -9,11 +9,22 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("express-flash");
-const moment = require('moment');
+const moment = require("moment");
+const http = require("http");
+const { Server } = require("socket.io");
 
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT;
+
+// SocketIO
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+  console.log("Successful Connected", socket.id);
+});
+// End SocketIO
 
 app.use(methodOverride("_method"));
 
@@ -48,7 +59,6 @@ app.use(express.static(`${__dirname}/public`));
 route(app);
 routeAdmin(app);
 
-
 // 404 Not Found
 app.get("*", (req, res) => {
   res.render("client/pages/errors/404", {
@@ -58,7 +68,7 @@ app.get("*", (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
 
