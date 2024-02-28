@@ -1,4 +1,5 @@
 const Role = require("../../models/role.model");
+const Account = require("../../models/account.model");
 
 const systemConfig = require("../../config/system");
 
@@ -7,6 +8,24 @@ module.exports.index = async (req, res) => {
   const records = await Role.find({
     deleted: false,
   });
+
+  for (const record of records) {
+    const user = await Account.findOne({
+      _id: record.createdBy.accountId,
+    });
+    if (user) {
+      record.createdBy.fullName = user.fullName;
+    }
+    const updatedBy = record.updatedBy.slice(-1)[0];
+    if (updatedBy) {
+      const userUpdated = await Account.findOne({
+        _id: updatedBy.accountId,
+      });
+      if (userUpdated && userUpdated.fullName) {
+        updatedBy.fullName = userUpdated.fullName;
+      }
+    }
+  }
 
   res.render("admin/pages/roles/index", {
     pageTitle: "Nhóm quyền",
@@ -24,6 +43,10 @@ module.exports.create = (req, res) => {
 // [POST] /admin/roles/create
 module.exports.createPost = async (req, res) => {
   try {
+    req.body.createdBy = {
+      accountId: res.locals.user.id,
+      createdAt: new Date(),
+    };
     const record = new Role(req.body);
     await record.save();
 
@@ -59,7 +82,18 @@ module.exports.editPatch = async (req, res) => {
   try {
     const id = req.params.id;
 
-    await Role.updateOne({ _id: id }, req.body);
+    const objectUpdatedBy = {
+      accountId: res.locals.user.id,
+      updatedAt: new Date(),
+    };
+
+    await Role.updateOne(
+      { _id: id },
+      {
+        ...req.body,
+        $push: { updatedBy: objectUpdatedBy },
+      }
+    );
 
     req.flash("success", "Cập nhật thành công!");
   } catch (error) {

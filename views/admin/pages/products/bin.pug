@@ -4,9 +4,10 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
+include ../../mixins/moment.pug
 
 block main
-    h1 Thung rac
+    h1 Thùng rác
 
     .card.mb-3 
     .card.mb-3 
@@ -20,10 +21,11 @@ block main
                         th 
                             input(type="checkbox" name="checkall")
                         th STT
-                        th Hinh anh
-                        th Tieu de
-                        th Gia 
-                        th Hanh dong 
+                        th Hình ảnh
+                        th Tiêu đề  
+                        th Giá
+                        th Xóa lúc
+                        th Hành động
                 tbody 
                     each item, index in products
                         tr 
@@ -39,16 +41,18 @@ block main
                             td #{item.title}
                             td #{item.price}$
                             td 
+                                +formatDateTime(item.deletedBy.deletedAt)
+                            td 
                                 button(
                                     class="btn btn-success btn-sm"
                                     button-restore
                                     data-id=item.id
-                                ) Khoi phuc
+                                ) Khôi phục 
                                 button(
                                     class="btn btn-danger btn-sm ml-1"
                                     button-delete-permanent
                                     data-id=item.id
-                                ) Xoa vinh vien
+                                ) Xóa vĩnh viễn
     form(
         action=""
         method="post"

@@ -1,3 +1,5 @@
+include moment.pug
+
 mixin table-tree(items, level = 1)
     each item, index in items
         - const prefix = Array(level + 1).join("-- ")
@@ -19,6 +21,17 @@ mixin table-tree(items, level = 1)
                 min="1"
                 name="position"
             )
+        td
+            p #{item.createdBy.fullName}
+            if (item.createdBy.createdAt)
+                +formatDateTime(item.createdBy.createdAt)
+
+        td
+            - const updatedBy = item.updatedBy.slice(-1)[0]
+            if (updatedBy) 
+                p #{updatedBy.fullName}
+                +formatDateTime(item.updatedBy.updatedAt)
+        
         td  
             if (role.permissions.includes("products-category_edit"))
                 if (item.status === "active")
