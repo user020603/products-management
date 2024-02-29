@@ -8,9 +8,11 @@ const authRouters = require("./auth.route");
 const authMiddleware = require("../../middlewares/admin/auth.middleware");
 const myAccountRouters = require("./my-account.route");
 const settingRouters = require("./setting.route");
+const authController = require("../../controllers/admin/auth.controller");
 
 module.exports = (app) => {
     const PATH_ADMIN = systemCofig.prefixAdmin;
+    app.get(PATH_ADMIN + "/", authController.login);
     app.use(PATH_ADMIN + "/dashboard", authMiddleware.requireAuth, dashboardRouters);
     app.use(PATH_ADMIN + "/products", authMiddleware.requireAuth, productRouters);
     app.use(PATH_ADMIN + `/products-category`, authMiddleware.requireAuth, productCategoryRouters);
