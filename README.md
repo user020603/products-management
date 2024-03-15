@@ -1,4 +1,4 @@
-### Env Variables
+# Env Variables
 
 Rename the `.env.example` file to `.env` and add the following
 
